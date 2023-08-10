@@ -17,6 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from django.contrib import admin
+from django.urls import path, include
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+   path('admin/', admin.site.urls),
+   path('pages/', include('django.contrib.flatpages.urls')),
+   # Делаем так, чтобы все адреса из нашего приложения (accounts/urls.py)
+   # подключались к главному приложению с префиксом products/.
+   path('news/', include('news.urls')),
 ]
