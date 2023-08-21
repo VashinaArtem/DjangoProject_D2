@@ -8,33 +8,55 @@ Posts
 {% endblock title %}
 
 {% block content %}
-   <h1>Post</h1>
-   <h3>{% current_time '%b %d %Y' %}</h3>
-   <hr>
-   {% if posts %}
-   <table>
-           <tr>
-               <td>Title</td>
-               <td>Text</td>
-               <td>Info Type</td>
-               <td>Rate</td>
-               <td>Creation_date</td>
-           </tr>
+    <h1>Post</h1>
+    <form action="" method="get">
+        {{ filterset.form.as_p }}
+        <input type="submit" value="Найти">
+    </form>
+    <h3>{% current_time '%b %d %Y' %}</h3>
+    <hr>
+    {% if posts %}
+    <table>
+            <tr>
+                <td>Title</td>
+                <td>Text</td>
+                <td>Info Type</td>
+                <td>Rate</td>
+                <td>Creation_date</td>
+            </tr>
 
-           {% for post in posts %}
-           <tr>
-               <td>{{ post.title|censor }}</td>
-               <td>{{ post.text|censor }}</td>
-               <td>{{ post.category.theme }}</td>
-               <td>{{ post.rate }}</td>
-               <td>{{ post.creation_date }}</td>
-           </tr>
-           {% endfor %}
+            {% for post in posts %}
+            <tr>
+                <td>{{ post.title|censor }}</td>
+                <td>{{ post.text|censor }}</td>
+                <td>{{ post.category.theme }}</td>
+                <td>{{ post.rate }}</td>
+                <td>{{ post.creation_date }}</td>
+            </tr>
+            {% endfor %}
 
-       </table>
-   {% else %}
-       <h2>NO POSTS</h2>
-   {% endif %}
+        </table>
+    {% else %}
+        <h2>NO POSTS</h2>
+    {% endif %}
+
+    {% if page_obj.has_previous %}
+    <a href="?{% url_replace page=1 %}">1</a>
+        {% if page_obj.previus_page_number != 1 %}
+            ...
+            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    {{ page_obj.number }}
+
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+            {% if paginator.num_pages != page_obj.next_page_number %}
+                ...
+                <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+            {% endif %}
+    {% endif %}
 {% endblock content %}
 
 

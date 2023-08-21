@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Sum
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
+from django.urls import reverse
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -20,10 +21,12 @@ class Author(models.Model):
         self.save()
 
 
+
 class Category(models.Model):
     theme = models.CharField(max_length=64, default='NO THEME', unique=True)
 
-
+    def __str__(self):
+        return self.theme
 
 class Post(models.Model):
     NEWS = 'NW'
@@ -55,6 +58,9 @@ class Post(models.Model):
 
     def __str__(self):
         return f'date: {self.creation_date}, author: {self.author}, text:{self.text[0:123]}'
+
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
 
 class PostCategory(models.Model):
