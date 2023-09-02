@@ -61,9 +61,11 @@ class ArticlePostCreate(CreateView):
 
 
 class NewsPostUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
     form_class = PostForm
     model = Post
     template_name = 'news_post_update.html'
+
     def form_valid(self, form):
         post = form.save(commit=False)
         post.info_type = 'NEWS'
@@ -71,9 +73,11 @@ class NewsPostUpdate(PermissionRequiredMixin, UpdateView):
 
 
 class ArticlePostUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
     from_class = PostForm
     model = Post
     template_name = 'article_post_update.html'
+
     def form_valid(self, form):
         post = form.save(commit=False)
         post.info_type = 'ARTICLE'
@@ -84,6 +88,7 @@ class NewsPostDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'news_post_delete.html'
     success_url = reverse_lazy('post_list')
+    permission_required = ('news.delete_post',)
     def form_valid(self, form):
         post = form.save(commit=False)
         post.info_type = 'NEWS'
@@ -95,6 +100,7 @@ class ArticlePostDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'article_post_delete.html'
     success_url = reverse_lazy('post_list')
+    permission_required = ('news.delete_post',)
     def form_valid(self, form):
         post = form.save(commit=False)
         post.info_type = 'ARTICLE'
