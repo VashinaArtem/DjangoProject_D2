@@ -22,8 +22,7 @@ from django.urls import path, include
 
 urlpatterns = [
    path('admin/', admin.site.urls),
-   path('pages/', include('django.contrib.flatpages.urls')),
-   # Делаем так, чтобы все адреса из нашего приложения (accounts/urls.py)
-   # подключались к главному приложению с префиксом products/.
+   #path('pages/', include('django.contrib.flatpages.urls')),
+   path("accounts/", include("allauth.urls")),
    path('news/', include('news.urls')),
 ]

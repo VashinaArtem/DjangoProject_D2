@@ -3,11 +3,13 @@
 {% load custom_tags %}
 {% load custom_filters %}
 
+
 {% block title %}
 Posts
 {% endblock title %}
 
 {% block content %}
+    {{ registr }}
     <h1>Post</h1>
     <form action="" method="get">
         {{ filterset.form.as_p }}
@@ -15,6 +17,13 @@ Posts
     </form>
     <h3>{% current_time '%b %d %Y' %}</h3>
     <hr>
+
+
+    <a href="{% url 'news_post_create' %}">Create post</a>
+    <a href="{% url 'article_post_create' %}">Create article</a>
+
+
+
     {% if posts %}
     <table>
             <tr>
@@ -23,6 +32,7 @@ Posts
                 <td>Info Type</td>
                 <td>Rate</td>
                 <td>Creation_date</td>
+                <td>Action</td>
             </tr>
 
             {% for post in posts %}
@@ -32,6 +42,20 @@ Posts
                 <td>{{ post.category.theme }}</td>
                 <td>{{ post.rate }}</td>
                 <td>{{ post.creation_date }}</td>
+                <td>
+
+                    {% if post.info_type == 'NEWS'  %}
+                        <a href="{% url 'news_post_update' post.id %}">Update_N</a>
+                        <a href="{% url 'news_post_delete' post.id %}">Delete_N</a>
+                    {% elif post.info_type == 'ARTICLE'  %}
+                        <a href="{% url 'article_post_update' post.id %}">Update_A</a>
+                        <a href="{% url 'article_post_delete' post.id %}">Delete_A</a>
+                    {% else %}
+                        No Type
+
+                    {% endif %}
+
+                </td>
             </tr>
             {% endfor %}
 

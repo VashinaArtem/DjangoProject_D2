@@ -9,7 +9,6 @@ class PostForm(forms.ModelForm):
             'text',
             'rate',
             'author',
-            'category',
         ]
 
 

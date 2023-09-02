@@ -6,12 +6,18 @@
 # по категории;
 # позже указываемой даты.
 
-from django_filters import FilterSet, DateTimeFilter
+from django_filters import FilterSet, DateTimeFilter, ModelMultipleChoiceFilter
 from django.forms import DateTimeInput
-from .models import Post
-
+from .models import Post, Category
 
 class PostFilter(FilterSet):
+
+    category = ModelMultipleChoiceFilter(
+        field_name='postcategory__category',
+        queryset=Category.objects.all(),
+        label='Category',
+        conjoined=True,
+    )
 
     added_after = DateTimeFilter(
         field_name='creation_date',
@@ -22,7 +28,6 @@ class PostFilter(FilterSet):
         model = Post
         fields = {
             'title': ['icontains'],
-            #'category': ['icontains'],
-            'postcategory__category' : ['exact']
+            'text' : ['icontains'],
         }
 
