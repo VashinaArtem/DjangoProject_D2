@@ -18,9 +18,10 @@ Posts
     <h3>{% current_time '%b %d %Y' %}</h3>
     <hr>
 
-
-    <a href="{% url 'news_post_create' %}">Create post</a>
-    <a href="{% url 'article_post_create' %}">Create article</a>
+    {% if perms.news.add_post %}
+        <a href="{% url 'news_post_create' %}">Create post</a>
+        <a href="{% url 'article_post_create' %}">Create article</a>
+    {% endif %}
 
 
 
@@ -32,7 +33,9 @@ Posts
                 <td>Info Type</td>
                 <td>Rate</td>
                 <td>Creation_date</td>
-                <td>Action</td>
+                {% if perms.news.change_post or perms.news.delete_post %}
+                    <td>Action</td>
+                {% endif %}
             </tr>
 
             {% for post in posts %}
@@ -42,14 +45,25 @@ Posts
                 <td>{{ post.category.theme }}</td>
                 <td>{{ post.rate }}</td>
                 <td>{{ post.creation_date }}</td>
+
                 <td>
 
                     {% if post.info_type == 'NEWS'  %}
-                        <a href="{% url 'news_post_update' post.id %}">Update_N</a>
-                        <a href="{% url 'news_post_delete' post.id %}">Delete_N</a>
+                        {% if perms.news.change_post %}
+                            <a href="{% url 'news_post_update' post.id %}">Update_N</a>
+                        {% endif %}
+                        {% if perms.news.delete_post %}
+                            <a href="{% url 'news_post_delete' post.id %}">Delete_N</a>
+                        {% endif %}
+
                     {% elif post.info_type == 'ARTICLE'  %}
-                        <a href="{% url 'article_post_update' post.id %}">Update_A</a>
-                        <a href="{% url 'article_post_delete' post.id %}">Delete_A</a>
+                        {% if perms.news.change_post %}
+                            <a href="{% url 'article_post_update' post.id %}">Update_A</a>
+                        {% endif %}
+                        {% if perms.news.delete_post %}
+                            <a href="{% url 'article_post_delete' post.id %}">Delete_A</a>
+                        {% endif %}
+
                     {% else %}
                         No Type
 

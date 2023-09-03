@@ -37,18 +37,20 @@ class PostDetail(DetailView):
 
 
 
-class NewsPostCreate(CreateView):
+class NewsPostCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     raise_exception = True
     form_class = PostForm
     model = Post
     template_name = 'news_post_edit.html'
     def form_valid(self, form):
         post = form.save(commit=False)
-        post.info_type = 'NEWS'
+        post.info_type = 'NW'
         return super().form_valid(form)
 
 
-class ArticlePostCreate(CreateView):
+class ArticlePostCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     raise_exception = True
     form_class = PostForm
     model = Post
@@ -56,7 +58,7 @@ class ArticlePostCreate(CreateView):
 
     def form_valid(self, form):
         post = form.save(commit=False)
-        post.info_type = 'ARTICLE'
+        post.info_type = 'AR'
         return super().form_valid(form)
 
 
@@ -68,7 +70,7 @@ class NewsPostUpdate(PermissionRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         post = form.save(commit=False)
-        post.info_type = 'NEWS'
+        post.info_type = 'NW'
         return super().form_valid(form)
 
 
@@ -80,30 +82,30 @@ class ArticlePostUpdate(PermissionRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         post = form.save(commit=False)
-        post.info_type = 'ARTICLE'
+        post.info_type = 'AR'
         return super().form_valid(form)
 
 
 class NewsPostDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.delete_post',)
     model = Post
     template_name = 'news_post_delete.html'
     success_url = reverse_lazy('post_list')
-    permission_required = ('news.delete_post',)
     def form_valid(self, form):
         post = form.save(commit=False)
-        post.info_type = 'NEWS'
+        post.info_type = 'NW'
         return super().form_valid(form)
 
 
 
 class ArticlePostDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.delete_post',)
     model = Post
     template_name = 'article_post_delete.html'
     success_url = reverse_lazy('post_list')
-    permission_required = ('news.delete_post',)
     def form_valid(self, form):
         post = form.save(commit=False)
-        post.info_type = 'ARTICLE'
+        post.info_type = 'AR'
         return super().form_valid(form)
 
 
